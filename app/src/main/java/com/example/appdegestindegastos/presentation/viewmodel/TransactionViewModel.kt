@@ -54,10 +54,34 @@ class TransactionViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             // Dummy Expenses
-            val expense1 = Expense(id = 1, amount = 75.50, description = "Compra semanal", date = LocalDate.now(), categoryId = 1)
-            val expense2 = Expense(id = 2, amount = 12.00, description = "Café", date = LocalDate.now().minusDays(1), categoryId = 1)
-            val expense3 = Expense(id = 3, amount = 200.0, description = "Gasolina", date = LocalDate.now().minusDays(2), categoryId = 2)
-            val expense4 = Expense(id = 4, amount = 50.0, description = "Cine", date = LocalDate.now().minusDays(3), categoryId = 3)
+            val expense1 = Expense(
+                id = 1,
+                amount = 75.50,
+                description = "Compra semanal",
+                date = LocalDate.now(),
+                categoryId = 1
+            )
+            val expense2 = Expense(
+                id = 2,
+                amount = 12.00,
+                description = "Café",
+                date = LocalDate.now().minusDays(1),
+                categoryId = 1
+            )
+            val expense3 = Expense(
+                id = 3,
+                amount = 200.0,
+                description = "Gasolina",
+                date = LocalDate.now().minusDays(2),
+                categoryId = 2
+            )
+            val expense4 = Expense(
+                id = 4,
+                amount = 50.0,
+                description = "Cine",
+                date = LocalDate.now().minusDays(3),
+                categoryId = 3
+            )
             val allExpenses = listOf(expense1, expense2, expense3, expense4)
             _expenses.value = allExpenses
 

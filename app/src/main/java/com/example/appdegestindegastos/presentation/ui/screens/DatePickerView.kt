@@ -49,7 +49,10 @@ fun DatePickerView(selectedDate: LocalDate, onDateSelected: (LocalDate) -> Unit)
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(id = R.string.date_label), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = stringResource(id = R.string.date_label),
+                style = MaterialTheme.typography.bodyLarge
+            )
             Text(
                 text = selectedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                 style = MaterialTheme.typography.bodyLarge

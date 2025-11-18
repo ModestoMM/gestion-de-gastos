@@ -1,23 +1,25 @@
 package com.example.appdegestindegastos.presentation.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.NavHostController
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.navArgument
+import com.example.appdegestindegastos.presentation.ui.screens.CategoryDetailScreen
 import com.example.appdegestindegastos.presentation.ui.screens.CurrentMonthlyExpenseScreen
+import com.example.appdegestindegastos.presentation.ui.screens.ExpenseDetailScreen
 import com.example.appdegestindegastos.presentation.ui.screens.ExpensesByCategoryScreen
 import com.example.appdegestindegastos.presentation.ui.screens.ListTransactionScreen
 import com.example.appdegestindegastos.presentation.viewmodel.TransactionViewModel
 
-import com.example.appdegestindegastos.presentation.ui.screens.ExpenseDetailScreen
-import com.example.appdegestindegastos.presentation.ui.screens.CategoryDetailScreen
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
-
 @Composable
 fun NavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = BottomNavItem.CurrentMonthlyExpense.route) {
+    NavHost(
+        navController = navController,
+        startDestination = BottomNavItem.CurrentMonthlyExpense.route
+    ) {
         composable(BottomNavItem.CurrentMonthlyExpense.route) {
             val viewModel: TransactionViewModel = hiltViewModel()
             CurrentMonthlyExpenseScreen(navController = navController, viewModel = viewModel)
