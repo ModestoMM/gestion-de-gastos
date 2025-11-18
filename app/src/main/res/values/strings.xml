@@ -1,3 +1,40 @@
 <resources>
-    <string name="app_name">App de gestión de gastos</string>
+    <string name="app_name">Gestión De Gastos</string>
+
+    <!-- Titles -->
+    <string name="monthly_summary_title">Resumen Mensual</string>
+    <string name="expenses_by_category_title">Por Categoría</string>
+    <string name="transactions_list_title">Transacciones</string>
+    <string name="edit_expense_title">Editar Gasto</string>
+    <string name="edit_category_title">Editar Categoría</string>
+    <string name="add_new_expense_title">Añadir Nuevo Gasto</string>
+    <string name="add_new_category_title">Añadir Nueva Categoría</string>
+    <string name="total_month_expenses_title">Total de Gastos del Mes</string>
+
+    <!-- Actions -->
+    <string name="add_category_action">Añadir Categoría</string>
+    <string name="add_expense_action">Añadir Gasto</string>
+    <string name="save_action">Guardar</string>
+    <string name="save_expense_action">Guardar Gasto</string>
+    <string name="save_category_action">Guardar Categoría</string>
+    <string name="back_action">Volver</string>
+
+    <!-- Labels & Placeholders -->
+    <string name="search_category_placeholder">Buscar categoría…</string>
+    <string name="description_label">Descripción</string>
+    <string name="amount_label">Monto</string>
+    <string name="date_label">Fecha:</string>
+    <string name="category_name_label">Nombre de la categoría</string>
+    <string name="total_label">Total:</string>
+
+    <!-- Messages -->
+    <string name="expense_not_found_message">Gasto no encontrado</string>
+    <string name="category_not_found_message">Categoría no encontrada</string>
+
+    <!-- Obsolete - Kept for reference if needed -->
+    <string name="current_monthly_expense_title_old">Resumen Mensual</string>
+    <string name="expenses_by_category_old">Por Categoría</string>
+    <string name="list_transaction_old">Transacciones</string>
+    <string name="category_detail">Detalle de Categoría</string>
+    <string name="expense_detail">Detalle de Gasto</string>
 </resources>
