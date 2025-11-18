@@ -75,7 +75,6 @@ fun CurrentMonthlyExpenseScreen(navController: NavController, viewModel: Transac
             style = MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
-        // Aquí se mostraría el resumen mensual de los gastos
 
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
 
@@ -85,7 +84,8 @@ fun CurrentMonthlyExpenseScreen(navController: NavController, viewModel: Transac
 
 @Composable
 fun TotalExpensesCard(total: Double) {
-    val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "MX"))
+    val locale = Locale.Builder().setLanguage("es").setRegion("MX").build()
+    val currencyFormat = NumberFormat.getCurrencyInstance(locale)
 
     Card(
         modifier = Modifier
