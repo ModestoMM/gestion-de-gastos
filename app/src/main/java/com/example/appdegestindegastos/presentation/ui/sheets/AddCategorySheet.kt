@@ -1,5 +1,6 @@
 package com.example.appdegestindegastos.presentation.ui.sheets
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,19 +19,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.appdegestindegastos.R
-import com.example.appdegestindegastos.presentation.viewmodel.TransactionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddCategorySheet(viewModel: TransactionViewModel) {
+fun AddCategorySheet(
+    onAddCategory: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
     val sheetState = rememberModalBottomSheetState()
     var categoryName by remember { mutableStateOf("") }
+    var isError by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     ModalBottomSheet(
-        onDismissRequest = { viewModel.onDismissSheet() },
+        onDismissRequest = onDismiss,
         sheetState = sheetState
     ) {
         Column(
@@ -45,15 +51,26 @@ fun AddCategorySheet(viewModel: TransactionViewModel) {
             Spacer(modifier = Modifier.height(16.dp))
             TextField(
                 value = categoryName,
-                onValueChange = { categoryName = it },
+                onValueChange = {
+                    categoryName = it
+                    isError = it.isBlank()
+                },
                 label = { Text(stringResource(id = R.string.category_name_label)) },
+                isError = isError,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    // TODO: Add logic to save the new category
-                    viewModel.onDismissSheet()
+                    isError = categoryName.isBlank()
+                    if (!isError) {
+                        onAddCategory(categoryName)
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.category_updated_successfully),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

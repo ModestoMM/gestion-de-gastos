@@ -1,5 +1,6 @@
 package com.example.appdegestindegastos.presentation.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,8 +19,12 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,16 +35,19 @@ import com.example.appdegestindegastos.presentation.viewmodel.TransactionViewMod
 @Composable
 fun CategoryDetailScreen(
     navController: NavController,
-    categoryId: Int?,
+    categoryId: Long?,
     viewModel: TransactionViewModel = hiltViewModel()
 ) {
-    val categories by viewModel.categories.collectAsState()
-    val category = categories.find { it.id == categoryId }
+    val categoriesWithExpenses by viewModel.categoriesWithExpenses.collectAsState()
+    val categoryWithExpenses = categoriesWithExpenses.find { it.category.id == categoryId }
+    val context = LocalContext.current
 
-    if (category == null) {
+    if (categoryWithExpenses == null) {
         Text(text = stringResource(id = R.string.category_not_found_message))
         return
     }
+
+    var categoryName by remember { mutableStateOf(categoryWithExpenses.category.type) }
 
     Column(
         modifier = Modifier
@@ -61,13 +69,21 @@ fun CategoryDetailScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
-            value = category.type,
-            onValueChange = { /* TODO: Handle change */ },
+            value = categoryName,
+            onValueChange = { categoryName = it },
             label = { Text(stringResource(id = R.string.category_name_label)) }
         )
-        // Aquí podrías listar los gastos de esta categoría también
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { navController.popBackStack() }) {
+        Button(onClick = {
+            val updatedCategory = categoryWithExpenses.category.copy(type = categoryName)
+            viewModel.updateCategory(updatedCategory)
+            Toast.makeText(
+                context,
+                context.getString(R.string.category_updated_successfully),
+                Toast.LENGTH_SHORT
+            ).show()
+            navController.popBackStack()
+        }) {
             Text(text = stringResource(id = R.string.save_action))
         }
     }

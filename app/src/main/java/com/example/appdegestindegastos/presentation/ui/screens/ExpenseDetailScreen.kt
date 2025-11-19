@@ -1,5 +1,6 @@
 package com.example.appdegestindegastos.presentation.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -23,21 +25,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.appdegestindegastos.R
 import com.example.appdegestindegastos.presentation.viewmodel.TransactionViewModel
+import java.time.Instant
+import java.time.ZoneId
 
 @Composable
 fun ExpenseDetailScreen(
     navController: NavController,
-    expenseId: Int?,
+    expenseId: Long?,
     viewModel: TransactionViewModel = hiltViewModel()
 ) {
-    val expenses by viewModel.expenses.collectAsStateWithLifecycle()
+    val expenses by viewModel.allExpenses.collectAsStateWithLifecycle()
     val expense = expenses.find { it.id == expenseId }
 
     if (expense == null) {
@@ -47,7 +53,15 @@ fun ExpenseDetailScreen(
 
     var description by remember { mutableStateOf(expense.description) }
     var amount by remember { mutableStateOf(expense.amount.toString()) }
-    var date by remember { mutableStateOf(expense.date) }
+    var date by remember {
+        mutableStateOf(
+            Instant
+                .ofEpochMilli(expense.date)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+        )
+    }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -79,6 +93,7 @@ fun ExpenseDetailScreen(
         TextField(
             value = amount,
             onValueChange = { amount = it },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             label = { Text(stringResource(id = R.string.amount_label)) },
             modifier = Modifier.fillMaxWidth()
         )
@@ -93,7 +108,19 @@ fun ExpenseDetailScreen(
         Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
-                // TODO: Add logic to save the changes in the ViewModel
+                val updatedExpense = expense.copy(
+                    description = description,
+                    amount = amount.toDouble(),
+                    date = date.atStartOfDay(
+                        ZoneId.systemDefault()
+                    ).toInstant().toEpochMilli()
+                )
+                viewModel.updateExpense(updatedExpense)
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.expense_added_successfully),
+                    Toast.LENGTH_SHORT
+                ).show()
                 navController.popBackStack()
             },
             modifier = Modifier.fillMaxWidth()

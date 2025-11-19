@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -26,17 +25,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.appdegestindegastos.R
-import com.example.appdegestindegastos.presentation.model.Category
 import com.example.appdegestindegastos.presentation.viewmodel.TransactionViewModel
 
 @Composable
 fun ExpensesByCategoryScreen(navController: NavController, viewModel: TransactionViewModel) {
-    val categories by viewModel.categories.collectAsStateWithLifecycle()
-    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val categoriesWithExpenses by viewModel.categoriesWithExpenses.collectAsStateWithLifecycle()
     var searchQuery by remember { mutableStateOf("") }
 
-    val filteredCategories = categories.filter {
-        it.type.contains(searchQuery, ignoreCase = true)
+    val filteredCategories = categoriesWithExpenses.filter {
+        it.category.type.contains(searchQuery, ignoreCase = true)
     }
 
     Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))) {
@@ -48,14 +45,10 @@ fun ExpensesByCategoryScreen(navController: NavController, viewModel: Transactio
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
 
-        if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.fillMaxWidth())
-        } else {
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.spacing_medium))) {
-                items(filteredCategories) { category ->
-                    CategoryItem(category = category) {
-                        navController.navigate("category_detail/${category.id}")
-                    }
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.spacing_medium))) {
+            items(filteredCategories) { categoryWithExpenses ->
+                CategoryItem(categoryWithExpenses = categoryWithExpenses) {
+                    navController.navigate("category_detail/${categoryWithExpenses.category.id}")
                 }
             }
         }
@@ -63,7 +56,10 @@ fun ExpensesByCategoryScreen(navController: NavController, viewModel: Transactio
 }
 
 @Composable
-fun CategoryItem(category: Category, onClick: () -> Unit) {
+fun CategoryItem(
+    categoryWithExpenses: com.example.appdegestindegastos.data.model.CategoryWithExpenses,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,10 +67,13 @@ fun CategoryItem(category: Category, onClick: () -> Unit) {
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(id = R.dimen.card_elevation))
     ) {
         Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))) {
-            Text(text = category.type, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = categoryWithExpenses.category.type,
+                style = MaterialTheme.typography.titleMedium
+            )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
             Text(
-                text = "${stringResource(id = R.string.total_label)} $${category.expenses.sumOf { it.amount }}",
+                text = "${stringResource(id = R.string.total_label)} $${categoryWithExpenses.expenses.sumOf { it.amount }}",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
