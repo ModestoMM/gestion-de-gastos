@@ -39,7 +39,7 @@ icon-core = { group = "androidx.compose.material", name = "material-icons-core" 
 icon-extends = { group = "androidx.compose.material", name = "material-icons-extended" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomV" }
 room-compilation = { group = "androidx.room", name = "room-compiler", version.ref = "roomV" }
-room-ktx = { group = "androidx.room", name = "room:room-ktx", version.ref = "roomV" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomV" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

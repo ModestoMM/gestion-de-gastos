@@ -34,21 +34,34 @@ import com.example.appdegestindegastos.presentation.ui.screens.DatePickerView
 import java.time.LocalDate
 import java.time.ZoneId
 
+/**
+ * A composable that provides a modal bottom sheet for adding a new expense.
+ * It includes input fields for description, amount, and a category selector,
+ * along with input validation.
+ *
+ * @param categories A list of available [CategoryEntity] objects to populate the category selector.
+ * @param onAddExpense A callback function that is invoked when the user confirms the new expense.
+ *                     It passes the amount, description, category ID, and date.
+ * @param onDismiss A callback function that is invoked when the sheet is dismissed.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseSheet(
-    categories: List<CategoryEntity>,
+    categories: List<com.example.appdegestindegastos.data.model.CategoryEntity>,
     onAddExpense: (Double, String, Long, Long) -> Unit,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
+    // State holders for the input fields.
     var description by remember { mutableStateOf("") }
     var amount by remember { mutableStateOf("") }
-    var selectedCategoryId by remember { mutableStateOf<Long?>(if (categories.isEmpty()) 0L else categories.first().id) }
+    var selectedCategoryId by remember { mutableStateOf<Long?>(null) }
+    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+
+    // State holders for tracking validation errors.
     var isDescriptionError by remember { mutableStateOf(false) }
     var isAmountError by remember { mutableStateOf(false) }
     var isCategoryError by remember { mutableStateOf(false) }
-    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     val context = LocalContext.current
 
     ModalBottomSheet(
@@ -65,31 +78,33 @@ fun AddExpenseSheet(
                 style = MaterialTheme.typography.headlineSmall
             )
             Spacer(modifier = Modifier.height(16.dp))
+            // Text field for the expense description with validation.
             TextField(
                 value = description,
                 onValueChange = {
                     description = it
-                    isDescriptionError = it.isBlank()
+                    isDescriptionError = it.isBlank() // Basic validation: cannot be blank.
                 },
                 label = { Text(stringResource(id = R.string.description_label)) },
                 isError = isDescriptionError,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
+            // Text field for the expense amount with validation.
             TextField(
                 value = amount,
                 onValueChange = {
                     amount = it
+                    // Validation: cannot be blank and must be a valid number.
                     isAmountError = it.isBlank() || it.toDoubleOrNull() == null
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = { Text(stringResource(id = R.string.amount_label)) },
                 isError = isAmountError,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Category Dropdown
+            // Dropdown menu for selecting a category.
             var expanded by remember { mutableStateOf(false) }
             ExposedDropdownMenuBox(
                 expanded = expanded,
@@ -97,34 +112,31 @@ fun AddExpenseSheet(
             ) {
                 TextField(
                     value = categories.find { it.id == selectedCategoryId }?.type ?: "",
-                    onValueChange = {
-                        selectedCategoryId = categories.find { category -> category.type == it }?.id
-                    },
+                    onValueChange = {},
                     readOnly = true,
                     label = { Text(stringResource(id = R.string.category_label)) },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    modifier = Modifier.menuAnchor().fillMaxWidth()
                 )
                 ExposedDropdownMenu(
                     expanded = expanded,
-                    onDismissRequest = { expanded = !expanded }
+                    onDismissRequest = { expanded = false }
                 ) {
                     categories.forEach { category ->
                         DropdownMenuItem(
                             text = { Text(category.type) },
                             onClick = {
                                 selectedCategoryId = category.id
-                                isCategoryError = false
+                                isCategoryError = false // Clear error on selection.
                                 expanded = false
                             }
                         )
                     }
                 }
             }
+            // Displays an error message if no category is selected.
             if (isCategoryError) {
                 Text(
                     text = stringResource(id = R.string.category_error_message),
@@ -133,10 +145,10 @@ fun AddExpenseSheet(
                 )
             }
 
-
             DatePickerView(selectedDate = selectedDate, onDateSelected = { selectedDate = it })
 
             Spacer(modifier = Modifier.height(16.dp))
+            // Button to save the expense.
             Button(
                 onClick = {
                     isDescriptionError = description.isBlank()
@@ -158,7 +170,8 @@ fun AddExpenseSheet(
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                }, modifier = Modifier.fillMaxWidth()
+                },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(stringResource(id = R.string.save_expense_action))
             }
