@@ -14,6 +14,9 @@ kspV = "2.0.21-1.0.25"
 hiltNavigationV = "1.2.0"
 material3 = "1.4.0"
 roomV = "2.6.1"
+mockk = "1.13.11"
+turbine = "1.1.0"
+coroutinesTest = "1.8.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +34,7 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationCompose" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android" , version.ref = "hiltV"}
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltV"}
 hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationV"}
@@ -40,6 +44,9 @@ icon-extends = { group = "androidx.compose.material", name = "material-icons-ext
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomV" }
 room-compilation = { group = "androidx.room", name = "room-compiler", version.ref = "roomV" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomV" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+kotlin-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -47,4 +54,3 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinAndroidKsp = { id = "com.google.devtools.ksp", version.ref ="kspV" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref ="hiltV" }
-

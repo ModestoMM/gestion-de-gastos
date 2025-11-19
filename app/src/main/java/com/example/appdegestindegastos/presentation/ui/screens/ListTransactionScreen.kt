@@ -19,7 +19,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.appdegestindegastos.R
-import com.example.appdegestindegastos.data.model.ExpenseEntity
+import com.example.appdegestindegastos.domain.model.Expense
 import com.example.appdegestindegastos.presentation.viewmodel.TransactionViewModel
 import java.time.Instant
 import java.time.ZoneId
@@ -41,7 +41,7 @@ fun ListTransactionScreen(navController: NavController, viewModel: TransactionVi
 }
 
 @Composable
-fun ExpenseItem(expense: ExpenseEntity, onClick: () -> Unit) {
+fun ExpenseItem(expense: Expense, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

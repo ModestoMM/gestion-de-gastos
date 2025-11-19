@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.appdegestindegastos.R
+import com.example.appdegestindegastos.domain.model.CategoryWithExpense
 import com.example.appdegestindegastos.presentation.viewmodel.TransactionViewModel
 
 @Composable
@@ -47,7 +48,7 @@ fun ExpensesByCategoryScreen(navController: NavController, viewModel: Transactio
 
         LazyColumn(verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.spacing_medium))) {
             items(filteredCategories) { categoryWithExpenses ->
-                CategoryItem(categoryWithExpenses = categoryWithExpenses) {
+                CategoryItem(categoryWithExpensesEntity = categoryWithExpenses) {
                     navController.navigate("category_detail/${categoryWithExpenses.category.id}")
                 }
             }
@@ -57,7 +58,7 @@ fun ExpensesByCategoryScreen(navController: NavController, viewModel: Transactio
 
 @Composable
 fun CategoryItem(
-    categoryWithExpenses: com.example.appdegestindegastos.data.model.CategoryWithExpenses,
+    categoryWithExpensesEntity: CategoryWithExpense,
     onClick: () -> Unit
 ) {
     Card(
@@ -68,12 +69,12 @@ fun CategoryItem(
     ) {
         Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))) {
             Text(
-                text = categoryWithExpenses.category.type,
+                text = categoryWithExpensesEntity.category.type,
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
             Text(
-                text = "${stringResource(id = R.string.total_label)} $${categoryWithExpenses.expenses.sumOf { it.amount }}",
+                text = "${stringResource(id = R.string.total_label)} $${categoryWithExpensesEntity.expenses.sumOf { it.amount }}",
                 style = MaterialTheme.typography.bodyMedium
             )
         }

@@ -1,6 +1,6 @@
 package com.example.appdegestindegastos.domain.usecase
 
-import com.example.appdegestindegastos.data.model.ExpenseEntity
+import com.example.appdegestindegastos.domain.model.Expense
 import com.example.appdegestindegastos.domain.repository.TransactionRepository
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class InsertExpenseUseCase @Inject constructor(
      * Invokes the use case to insert an expense.
      * @param expense The expense to be inserted.
      */
-    suspend operator fun invoke(expense: ExpenseEntity) {
+    suspend operator fun invoke(expense: Expense) {
         transactionRepository.insertExpense(expense)
     }
 }

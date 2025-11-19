@@ -2,8 +2,8 @@ package com.example.appdegestindegastos.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.appdegestindegastos.data.model.CategoryEntity
-import com.example.appdegestindegastos.data.model.ExpenseEntity
+import com.example.appdegestindegastos.domain.model.Category
+import com.example.appdegestindegastos.domain.model.Expense
 import com.example.appdegestindegastos.domain.usecase.GetAllExpensesUseCase
 import com.example.appdegestindegastos.domain.usecase.GetCategoriesWithExpensesUseCase
 import com.example.appdegestindegastos.domain.usecase.InsertCategoryUseCase
@@ -56,7 +56,7 @@ class TransactionViewModel @Inject constructor(
     fun insertExpense(amount: Double, description: String, categoryId: Long, date: Long) {
         viewModelScope.launch {
             insertExpenseUseCase(
-                ExpenseEntity(
+                Expense(
                     amount = amount,
                     description = description,
                     date = date,
@@ -75,7 +75,7 @@ class TransactionViewModel @Inject constructor(
     fun insertCategory(type: String) {
         viewModelScope.launch {
             insertCategoryUseCase(
-                CategoryEntity(
+                Category(
                     type = type
                 )
             )
@@ -88,7 +88,7 @@ class TransactionViewModel @Inject constructor(
      * the modified entity without needing to know the implementation details.
      * @param expense The ExpenseEntity with updated information.
      */
-    fun updateExpense(expense: ExpenseEntity) {
+    fun updateExpense(expense: Expense) {
         viewModelScope.launch {
             updateExpenseUseCase(expense)
         }
@@ -99,7 +99,7 @@ class TransactionViewModel @Inject constructor(
      * Encapsulates the update logic, promoting separation of concerns.
      * @param category The CategoryEntity with updated information.
      */
-    fun updateCategory(category: CategoryEntity) {
+    fun updateCategory(category: Category) {
         viewModelScope.launch {
             updateCategoryUseCase(category)
         }

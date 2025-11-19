@@ -15,7 +15,7 @@ import androidx.room.Relation
  *            defines the link between the parent and child entities, specifying the parent column
  *            (`id` from `CategoryEntity`) and the child column (`categoryId` from `ExpenseEntity`).
  */
-data class CategoryWithExpenses(
+data class CategoryWithExpensesEntity(
     @Embedded val category: CategoryEntity,
     @Relation(
         parentColumn = "id",
