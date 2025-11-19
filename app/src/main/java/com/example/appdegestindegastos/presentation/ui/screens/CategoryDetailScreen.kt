@@ -25,8 +25,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.appdegestindegastos.R
@@ -52,7 +52,7 @@ fun CategoryDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(dimensionResource(R.dimen.spacing_large))
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = { navController.popBackStack() }) {
@@ -61,19 +61,19 @@ fun CategoryDetailScreen(
                     contentDescription = stringResource(id = R.string.back_action)
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.spacing_medium)))
             Text(
                 text = stringResource(id = R.string.edit_category_title),
                 style = MaterialTheme.typography.headlineMedium
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
         TextField(
             value = categoryName,
             onValueChange = { categoryName = it },
             label = { Text(stringResource(id = R.string.category_name_label)) }
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
         Button(onClick = {
             val updatedCategory = categoryWithExpenses.category.copy(type = categoryName)
             viewModel.updateCategory(updatedCategory)
