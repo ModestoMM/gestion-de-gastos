@@ -65,6 +65,17 @@ dependencies {
     implementation(libs.hilt.navigation)
     ksp(libs.hilt.compiler)
 
+    //Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compilation)
+    implementation(libs.room.ktx)
+
+    //Material3 Icons
+    implementation(libs.androidx.material3)
+    implementation(libs.icon.core)
+    implementation(libs.icon.extends)
+    implementation(libs.androidx.material3)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,4 +83,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+
 }

@@ -12,6 +12,8 @@ navigationCompose = "2.9.6"
 hiltV = "2.51.1"
 kspV = "2.0.21-1.0.25"
 hiltNavigationV = "1.2.0"
+material3 = "1.4.0"
+roomV = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +34,12 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 hilt-android = { group = "com.google.dagger", name = "hilt-android" , version.ref = "hiltV"}
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltV"}
 hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationV"}
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+icon-core = { group = "androidx.compose.material", name = "material-icons-core" }
+icon-extends = { group = "androidx.compose.material", name = "material-icons-extended" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomV" }
+room-compilation = { group = "androidx.room", name = "room-compiler", version.ref = "roomV" }
+room-ktx = { group = "androidx.room", name = "room:room-ktx", version.ref = "roomV" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

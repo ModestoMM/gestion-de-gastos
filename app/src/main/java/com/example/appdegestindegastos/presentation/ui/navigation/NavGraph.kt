@@ -22,7 +22,7 @@ fun NavGraph(navController: NavHostController) {
     ) {
         composable(BottomNavItem.CurrentMonthlyExpense.route) {
             val viewModel: TransactionViewModel = hiltViewModel()
-            CurrentMonthlyExpenseScreen(navController = navController, viewModel = viewModel)
+            CurrentMonthlyExpenseScreen(viewModel = viewModel)
         }
         composable(BottomNavItem.ExpensesByCategory.route) {
             val viewModel: TransactionViewModel = hiltViewModel()
@@ -34,16 +34,16 @@ fun NavGraph(navController: NavHostController) {
         }
         composable(
             route = BottomNavItem.CategoryDetail.route,
-            arguments = listOf(navArgument("categoryId") { type = NavType.IntType })
+            arguments = listOf(navArgument("categoryId") { type = NavType.LongType })
         ) { backStackEntry ->
-            val categoryId = backStackEntry.arguments?.getInt("categoryId")
+            val categoryId = backStackEntry.arguments?.getLong("categoryId")
             CategoryDetailScreen(navController = navController, categoryId = categoryId)
         }
         composable(
             route = BottomNavItem.ExpenseDetail.route,
-            arguments = listOf(navArgument("expenseId") { type = NavType.IntType })
+            arguments = listOf(navArgument("expenseId") { type = NavType.LongType })
         ) { backStackEntry ->
-            val expenseId = backStackEntry.arguments?.getInt("expenseId")
+            val expenseId = backStackEntry.arguments?.getLong("expenseId")
             ExpenseDetailScreen(navController = navController, expenseId = expenseId)
         }
     }

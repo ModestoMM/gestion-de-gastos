@@ -16,6 +16,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -23,34 +26,51 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.example.appdegestindegastos.R
 import com.example.appdegestindegastos.presentation.ui.sheets.AddCategorySheet
 import com.example.appdegestindegastos.presentation.ui.sheets.AddExpenseSheet
 import com.example.appdegestindegastos.presentation.viewmodel.TransactionViewModel
 import java.text.NumberFormat
 import java.time.LocalDate
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 @Composable
-fun CurrentMonthlyExpenseScreen(navController: NavController, viewModel: TransactionViewModel) {
-    val expenses by viewModel.expenses.collectAsStateWithLifecycle()
-    val showAddExpenseSheet by viewModel.showAddExpenseSheet.collectAsStateWithLifecycle()
-    val showAddCategorySheet by viewModel.showAddCategorySheet.collectAsStateWithLifecycle()
+fun CurrentMonthlyExpenseScreen(viewModel: TransactionViewModel) {
+    val expenses by viewModel.allExpenses.collectAsStateWithLifecycle()
+    val categoriesWithExpenses by viewModel.categoriesWithExpenses.collectAsStateWithLifecycle()
+    var showAddExpenseSheet by remember { mutableStateOf(false) }
+    var showAddCategorySheet by remember { mutableStateOf(false) }
 
-    val currentMonth = LocalDate.now().month
+    val currentMonth = LocalDate.now().monthValue
     val currentYear = LocalDate.now().year
 
     val totalForMonth = expenses.filter {
-        it.date.month == currentMonth && it.date.year == currentYear
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(it.date)
+        calendar.get(Calendar.MONTH) + 1 == currentMonth && calendar.get(Calendar.YEAR) == currentYear
     }.sumOf { it.amount }
 
     if (showAddExpenseSheet) {
-        AddExpenseSheet(viewModel = viewModel)
+        AddExpenseSheet(
+            categories = categoriesWithExpenses.map { it.category },
+            onAddExpense = { amount, description, categoryId, date ->
+                viewModel.insertExpense(amount, description, categoryId, date)
+                showAddExpenseSheet = false
+            },
+            onDismiss = { showAddExpenseSheet = false }
+        )
     }
 
     if (showAddCategorySheet) {
-        AddCategorySheet(viewModel = viewModel)
+        AddCategorySheet(
+            onAddCategory = { type ->
+                viewModel.insertCategory(type)
+                showAddCategorySheet = false
+            },
+            onDismiss = { showAddCategorySheet = false }
+        )
     }
 
     Column(
@@ -62,10 +82,10 @@ fun CurrentMonthlyExpenseScreen(navController: NavController, viewModel: Transac
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(onClick = { viewModel.onAddCategoryClicked() }) {
+            Button(onClick = { showAddCategorySheet = true }) {
                 Text(text = stringResource(id = R.string.add_category_action))
             }
-            Button(onClick = { viewModel.onAddExpenseClicked() }) {
+            Button(onClick = { showAddExpenseSheet = true }) {
                 Text(text = stringResource(id = R.string.add_expense_action))
             }
         }

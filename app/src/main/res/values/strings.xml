@@ -37,4 +37,8 @@
     <string name="list_transaction_old">Transacciones</string>
     <string name="category_detail">Detalle de Categoría</string>
     <string name="expense_detail">Detalle de Gasto</string>
+    <string name="category_label">Categoria</string>
+    <string name="category_error_message">Asegurese de llenar todos los campos</string>
+    <string name="expense_added_successfully">Se agrego el gasto exitosamente</string>
+    <string name="category_updated_successfully">Categoria agregada con exito</string>
 </resources>
