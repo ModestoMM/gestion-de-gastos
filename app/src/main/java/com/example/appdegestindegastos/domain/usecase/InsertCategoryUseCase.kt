@@ -1,6 +1,6 @@
 package com.example.appdegestindegastos.domain.usecase
 
-import com.example.appdegestindegastos.data.model.CategoryEntity
+import com.example.appdegestindegastos.domain.model.Category
 import com.example.appdegestindegastos.domain.repository.TransactionRepository
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class InsertCategoryUseCase @Inject constructor(
      * Invokes the use case to insert a category.
      * @param category The category to be inserted.
      */
-    suspend operator fun invoke(category: CategoryEntity) {
+    suspend operator fun invoke(category: Category) {
         transactionRepository.insertCategory(category)
     }
 }

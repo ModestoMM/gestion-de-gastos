@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.appdegestindegastos.data.model.CategoryEntity
-import com.example.appdegestindegastos.data.model.CategoryWithExpenses
+import com.example.appdegestindegastos.data.model.CategoryWithExpensesEntity
 import com.example.appdegestindegastos.data.model.ExpenseEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -48,7 +48,7 @@ interface TransactionDao {
      */
     @Transaction
     @Query("SELECT * FROM categories")
-    fun getCategoriesWithExpenses(): Flow<List<CategoryWithExpenses>>
+    fun getCategoriesWithExpenses(): Flow<List<CategoryWithExpensesEntity>>
 
     /**
      * Returns a flow of the list of all expenses.

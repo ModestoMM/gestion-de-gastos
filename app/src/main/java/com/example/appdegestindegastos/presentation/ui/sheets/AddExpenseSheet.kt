@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.appdegestindegastos.R
 import com.example.appdegestindegastos.data.model.CategoryEntity
+import com.example.appdegestindegastos.domain.model.Category
 import com.example.appdegestindegastos.presentation.ui.screens.DatePickerView
 import java.time.LocalDate
 import java.time.ZoneId
@@ -44,7 +45,7 @@ import java.time.ZoneId
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddExpenseSheet(
-    categories: List<CategoryEntity>,
+    categories: List<Category>,
     onAddExpense: (Double, String, Long, Long) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -115,7 +116,9 @@ fun AddExpenseSheet(
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                     },
-                    modifier = Modifier.menuAnchor().fillMaxWidth()
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth()
                 )
                 ExposedDropdownMenu(
                     expanded = expanded,
